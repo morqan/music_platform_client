@@ -1,12 +1,19 @@
 import React from 'react';
-import {Button} from "@material-ui/core";
+import {Button, Container} from "@material-ui/core";
+import Navbar from "../components/Navbar";
+import MainLayouts from "../layouts/MainLayouts";
 
 const Index = () => {
     return (
-        <div>
-            home page
-            <Button>start</Button>
-        </div>
+        <>
+           <MainLayouts>
+               <Container >
+                   home page
+                   <Navbar/>
+                   <Button>start</Button>
+               </Container>
+           </MainLayouts>
+        </>
     );
 };
 
