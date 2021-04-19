@@ -2,9 +2,12 @@ import React, {useState} from 'react';
 import MainLayouts from "../../layouts/MainLayouts";
 import StepWrapper from "../../components/StepWrapper";
 import {Button, Grid, TextField} from "@material-ui/core";
+import FileUpload from "../../components/FileUpload";
 
 const Create: React.FC = () => {
     const [activeStep, setActiveStep] = useState(0)
+    const [picture, setPicture] = useState(null)
+    const [audio, setAudio] = useState(null)
     const next = () => {
         if (activeStep !== 2) {
             setActiveStep(prev => prev + 1)
@@ -24,10 +27,14 @@ const Create: React.FC = () => {
                     </Grid>
                 }
                 { activeStep === 1 &&
-                <h1>Step 2</h1>
+                    <FileUpload accept='image/*' file={''} setFile={setPicture}>
+                        <Button>Upload Image</Button>
+                    </FileUpload>
                 }
                 { activeStep === 2 &&
-                <h1>Step 3</h1>
+                <FileUpload accept='audio/*' file={''} setFile={setAudio}>
+                    <Button>Upload audio</Button>
+                </FileUpload>
                 }
             </StepWrapper>
             <Grid container style={{justifyContent: 'space-between', padding: '0 35px', width: 600, margin: '0 auto'}}>
