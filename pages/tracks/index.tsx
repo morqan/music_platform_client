@@ -4,13 +4,15 @@ import {Card, Grid, Button, Box} from "@material-ui/core";
 import {useRouter} from 'next/router'
 import { ITrack } from '../../types/track';
 import TrackList from "../../components/TrackList";
+import {useTypedSelector} from "../../hooks/useTypedSelector";
+import {wrapper} from "../../store";
+import {fetchTracks} from "../../store/actions-creators/track";
 const Index = () => {
     const router = useRouter()
-    const tracks: ITrack[] = [
-        { _id: '1', name: 'track1', artist: 'artist 1', text: 'text 1', listens: 1 , audio:'http://localhost:5000/audio/', picture:'http://localhost:5000/image/f3610e2e-d91f-422b-8416-e0c624e19125.png', comments:[]},
-        { _id: '2', name: 'track2', artist: 'artist 2', text: 'text 2', listens: 1 , audio:'http://localhost:5000/audio/', picture:'http://localhost:5000/image/f3610e2e-d91f-422b-8416-e0c624e19125.png', comments:[]},
-        { _id: '3', name: 'track3', artist: 'artist 3', text: 'text 3', listens: 1 , audio:'http://localhost:5000/audio/', picture:'http://localhost:5000/image/f3610e2e-d91f-422b-8416-e0c624e19125.png', comments:[]}
-    ]
+    const {error, track} = useTypedSelector(state => state.track)
+    if (error) {
+        return <MainLayouts><h1>{error}</h1></MainLayouts>
+    }
     return (
         <MainLayouts>
             <Grid container style={{justifyContent: 'center'}}>
@@ -21,7 +23,7 @@ const Index = () => {
                             <Button variant="contained" color="primary" onClick={() => router.push('/tracks/create')}>Upload</Button>
                         </Grid>
                     </Box>
-                    <TrackList tracks={tracks} />
+                    <TrackList tracks={track} />
                 </Card>
             </Grid>
         </MainLayouts>
@@ -29,3 +31,7 @@ const Index = () => {
 };
 
 export default Index;
+
+export const getServerSideProps = wrapper.getServerSideProps(async ({store}) => {
+    store.dispatch(fetchTracks())
+})
